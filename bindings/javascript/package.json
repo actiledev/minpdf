@@ -4,7 +4,7 @@
   "description": "Ultra fast, zero-runtime-dependency PDF engine written in C",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actiledev/minpdf.git",
+    "url": "https://github.com/actiledev/minpdf.git",
     "directory": "bindings/javascript"
   },
   "homepage": "https://github.com/actiledev/minpdf#readme",

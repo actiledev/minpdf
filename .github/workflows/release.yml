@@ -30,16 +30,28 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          fail() {
+            echo "::error::$1"
+            exit 1
+          }
+
+          [[ "$GITHUB_REF_NAME" == v* ]] || fail "Release tag must start with 'v' (received '$GITHUB_REF_NAME')."
           tag_version="${GITHUB_REF_NAME#v}"
           npm_version="$(node -p "require('./bindings/javascript/package.json').version")"
           lock_version="$(node -p "require('./bindings/javascript/package-lock.json').version")"
           python_name="$(python -c "import tomllib; print(tomllib.load(open('pyproject.toml', 'rb'))['project']['name'])")"
           python_version="$(python -c "import tomllib; print(tomllib.load(open('pyproject.toml', 'rb'))['project']['version'])")"
-          test "$GITHUB_REF_NAME" = "v$tag_version"
-          test "$tag_version" = "$npm_version"
-          test "$tag_version" = "$lock_version"
-          test "$tag_version" = "$python_version"
-          test "$python_name" = "minpdf-core"
+
+          echo "Tag version:          $tag_version"
+          echo "npm package version:  $npm_version"
+          echo "npm lockfile version: $lock_version"
+          echo "Python package:       $python_name@$python_version"
+
+          [[ -n "$tag_version" ]] || fail "Release tag must include a version after 'v'."
+          [[ "$tag_version" == "$npm_version" ]] || fail "Tag version '$tag_version' does not match bindings/javascript/package.json version '$npm_version'."
+          [[ "$tag_version" == "$lock_version" ]] || fail "Tag version '$tag_version' does not match bindings/javascript/package-lock.json version '$lock_version'."
+          [[ "$tag_version" == "$python_version" ]] || fail "Tag version '$tag_version' does not match pyproject.toml version '$python_version'."
+          [[ "$python_name" == "minpdf-core" ]] || fail "Python project name must be 'minpdf-core' (found '$python_name')."
           echo "version=$tag_version" >> "$GITHUB_OUTPUT"
 
   npm:
@@ -77,6 +89,44 @@ jobs:
         run: |
           if npm view "minpdf@$RELEASE_VERSION" version >/dev/null 2>&1; then
             echo "minpdf@$RELEASE_VERSION already exists; skipping the bootstrap version."
+          else
+            npm publish
+          fi
+
+  github-packages:
+    name: Publish GitHub package
+    needs: validate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    defaults:
+      run:
+        working-directory: bindings/javascript
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: mymindstorm/setup-emsdk@v14
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          registry-url: https://npm.pkg.github.com
+          scope: "@actiledev"
+          package-manager-cache: false
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+      - name: Prepare GitHub Packages metadata
+        run: npm pkg set name=@actiledev/minpdf publishConfig.registry=https://npm.pkg.github.com
+      - run: npm pack --dry-run
+      - name: Publish package
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_VERSION: ${{ needs.validate.outputs.version }}
+        run: |
+          if npm view "@actiledev/minpdf@$RELEASE_VERSION" version >/dev/null 2>&1; then
+            echo "@actiledev/minpdf@$RELEASE_VERSION already exists; skipping."
           else
             npm publish
           fi

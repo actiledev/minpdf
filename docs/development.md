@@ -59,6 +59,7 @@ A complete release consists of:
 
 - source archive containing `include/minpdf.h` and `core.c`
 - npm package containing generated JavaScript, declarations, and `.wasm`
+- GitHub npm package published as `@actiledev/minpdf` and linked to this repository
 - CPython 3.9+ abi3 wheels for supported platforms plus an sdist
 - tagged Go module at `github.com/actiledev/minpdf`
 
@@ -68,13 +69,17 @@ x64, and evergreen browsers.
 ## Publishing a release
 
 Update the version in `pyproject.toml`, `bindings/javascript/package.json`, and
-`bindings/javascript/package-lock.json`. Push a matching tag such as `v0.1.0`.
-The release workflow rejects tags that do not match all three files.
+`bindings/javascript/package-lock.json`. Commit and push those changes, then tag
+that same commit with a matching tag such as `v0.1.0`. The release workflow
+rejects tags that do not match all three files.
 
 The workflow builds the npm package, a Python source distribution, and CPython
-3.9 ABI3 wheels for Linux x64/arm64, macOS x64/arm64, and Windows x64. GitHub
-environments named `npm` and `pypi` control the publication jobs. Configure both
-environments with required reviewers before creating a release tag.
+3.9 ABI3 wheels for Linux x64/arm64, macOS x64/arm64, and Windows x64. It
+publishes JavaScript releases to npm and GitHub Packages. The GitHub package uses
+the workflow repository's `GITHUB_TOKEN`; its `packages: write` permission and
+the package's `repository` metadata associate it with `actiledev/minpdf`. GitHub
+environments named `npm` and `pypi` control the other publication jobs. Configure
+both environments with required reviewers before creating a release tag.
 
 PyPI can create `minpdf-core` through a pending trusted publisher. Configure its
 GitHub owner as `actiledev`, its repository as `minpdf`, its workflow as
