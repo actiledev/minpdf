@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "minpdf"
+version = "0.1.0"
+description = "Cross-language, zero-runtime-dependency PDF generation powered by one C11 file"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICENSE"]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/actiledev/minpdf"
+Documentation = "https://github.com/actiledev/minpdf/tree/main/docs"
+Issues = "https://github.com/actiledev/minpdf/issues"
+Repository = "https://github.com/actiledev/minpdf"
+
+[tool.cibuildwheel]
+build = "cp39-*"
+test-command = "python -m unittest {project}/bindings/python/test_minpdf.py"
+
+[tool.cibuildwheel.linux]
+archs = ["auto"]
+
+[tool.cibuildwheel.macos]
+archs = ["auto"]
+
+[tool.cibuildwheel.windows]
+archs = ["AMD64"]
+
+[tool.setuptools]
+package-dir = {"" = "bindings/python/src"}
+packages = ["minpdf"]

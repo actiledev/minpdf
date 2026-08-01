@@ -1,0 +1,153 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate release version
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          package-manager-cache: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - id: version
+        name: Check tag and package versions
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag_version="${GITHUB_REF_NAME#v}"
+          npm_version="$(node -p "require('./bindings/javascript/package.json').version")"
+          lock_version="$(node -p "require('./bindings/javascript/package-lock.json').version")"
+          python_version="$(python -c "import tomllib; print(tomllib.load(open('pyproject.toml', 'rb'))['project']['version'])")"
+          test "$GITHUB_REF_NAME" = "v$tag_version"
+          test "$tag_version" = "$npm_version"
+          test "$tag_version" = "$lock_version"
+          test "$tag_version" = "$python_version"
+          echo "version=$tag_version" >> "$GITHUB_OUTPUT"
+
+  npm:
+    name: Publish npm package
+    needs: validate
+    runs-on: ubuntu-latest
+    environment:
+      name: npm
+      url: https://www.npmjs.com/package/minpdf/v/${{ needs.validate.outputs.version }}
+    permissions:
+      contents: read
+      id-token: write
+    defaults:
+      run:
+        working-directory: bindings/javascript
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: mymindstorm/setup-emsdk@v14
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+      - name: Install npm with trusted publishing support
+        run: npm install --global npm@^11.5.1
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+      - run: npm pack --dry-run
+      - name: Publish package
+        env:
+          RELEASE_VERSION: ${{ needs.validate.outputs.version }}
+        run: |
+          if npm view "minpdf@$RELEASE_VERSION" version >/dev/null 2>&1; then
+            echo "minpdf@$RELEASE_VERSION already exists; skipping the bootstrap version."
+          else
+            npm publish
+          fi
+
+  python-wheels:
+    name: Build Python wheel (${{ matrix.label }})
+    needs: validate
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: linux-x64
+            os: ubuntu-latest
+            arch: x86_64
+          - label: linux-arm64
+            os: ubuntu-24.04-arm
+            arch: aarch64
+          - label: macos-x64
+            os: macos-15-intel
+            arch: x86_64
+          - label: macos-arm64
+            os: macos-15
+            arch: arm64
+          - label: windows-x64
+            os: windows-latest
+            arch: AMD64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: pypa/cibuildwheel@v4.1.0
+        env:
+          CIBW_ARCHS: ${{ matrix.arch }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: python-wheel-${{ matrix.label }}
+          path: wheelhouse/*.whl
+          if-no-files-found: error
+
+  python-sdist:
+    name: Build Python source distribution
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - run: python -m pip install build twine
+      - run: python -m build --sdist
+      - run: python -m twine check dist/*
+      - uses: actions/upload-artifact@v4
+        with:
+          name: python-sdist
+          path: dist/*.tar.gz
+          if-no-files-found: error
+
+  pypi:
+    name: Publish Python distributions
+    needs: [validate, python-wheels, python-sdist]
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/minpdf/${{ needs.validate.outputs.version }}/
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: python-*
+          path: dist
+          merge-multiple: true
+      - uses: pypa/gh-action-pypi-publish@release/v1

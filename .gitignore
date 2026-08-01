@@ -1,0 +1,74 @@
+# Operating systems and editors
+.DS_Store
+Thumbs.db
+*~
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Local environment and tooling
+.env
+.env.*
+!.env.example
+.direnv/
+.cache/
+.coverage
+.coverage.*
+coverage/
+htmlcov/
+
+# Native C/C++ and CMake builds
+/build/
+/cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+Makefile.cmake
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+*.exe
+
+# Go build and test output
+*.test
+*.out
+coverage.out
+
+# Python build, packaging, and test output
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+sdist/
+wheels/
+pip-wheel-metadata/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+.venv/
+venv/
+ENV/
+
+# JavaScript, TypeScript, and WebAssembly output
+node_modules/
+bindings/javascript/dist/
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Generated example output
+/*.pdf
+/examples/results/*
+!/examples/results/.gitkeep
