@@ -29,27 +29,34 @@ No third-party Go module is used.
 
 ## Python
 
-```sh
-pip install minpdf
-```
+The first `minpdf-core` PyPI release is being prepared. Until it is published,
+install the package directly from the repository:
 
 ```sh
-python -m pip install minpdf
+python -m pip install "minpdf-core @ git+https://github.com/actiledev/minpdf.git"
+```
+
+After the PyPI release, either of these commands will install the distribution:
+
+```sh
+pip install minpdf-core
+python -m pip install minpdf-core
 ```
 
 With uv:
 
 ```sh
-uv add minpdf
+uv add minpdf-core
 ```
 
 ```sh
-uv pip install minpdf
+uv pip install minpdf-core
 ```
 
-Prebuilt abi3 wheels target CPython 3.9 and newer. Building from the source
-distribution requires a C compiler and setuptools. minpdf has no Python runtime
-dependencies.
+The release workflow builds abi3 wheels targeting CPython 3.9 and newer. The
+distribution name is `minpdf-core`; Python code imports it as `minpdf`. Building
+from the source distribution requires a C compiler and setuptools. minpdf has
+no Python runtime dependencies.
 
 ## JavaScript, TypeScript, and browsers
 

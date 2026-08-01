@@ -9,7 +9,7 @@ if ! command -v emcc >/dev/null 2>&1; then
 fi
 
 mkdir -p dist
-emcc ../../core.c wasm/bridge.c -I../../include -O3 -flto \
+emcc ../../core.c wasm/bridge.c -I../../include -Oz -flto \
   -s MODULARIZE=1 -s EXPORT_ES6=1 -s ENVIRONMENT=web,worker,node \
   -s ALLOW_MEMORY_GROWTH=1 -s FILESYSTEM=0 -s MALLOC=emmalloc \
   -s EXPORTED_RUNTIME_METHODS='["UTF8ToString","lengthBytesUTF8","stringToUTF8","HEAPU8","HEAPU32","HEAPF32"]' \

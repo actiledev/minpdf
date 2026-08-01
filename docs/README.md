@@ -1,5 +1,7 @@
 # minpdf documentation
 
+[README](../README.md) · [Installation](installation.md) · [API](api.md) · [Roadmap](roadmap.md) · [Contributing](../CONTRIBUTING.md) · [Security](../SECURITY.md)
+
 minpdf is a PDF generation library powered by one C11 file. The C/C++, Go,
 Python, JavaScript, and browser APIs share the same page model, coordinate
 system, drawing behavior, image decoder, font parser, and PDF serializer.
@@ -9,7 +11,6 @@ system, drawing behavior, image decoder, font parser, and PDF serializer.
 - [Installation](installation.md): requirements and setup for every language
 - [Core concepts](concepts.md): pages, coordinates, colors, units, and resources
 - [Shared API](api.md): operation mapping and default behavior
-- [Complete example](example.md): the same invoice in each language
 
 ## Language guides
 
@@ -24,8 +25,16 @@ system, drawing behavior, image decoder, font parser, and PDF serializer.
 - [Text and fonts](text-and-fonts.md)
 - [Images](images.md)
 - [Tables](tables.md)
-- [Output, errors, and ownership](output-and-errors.md)
+- [Output and errors](output-and-errors.md)
 - [Performance and development](development.md)
+
+## Project and community
+
+- [Roadmap](roadmap.md)
+- [Contributing](../CONTRIBUTING.md)
+- [Code of Conduct](../CODE_OF_CONDUCT.md)
+- [Security policy](../SECURITY.md)
+- [MIT License](../LICENSE)
 
 ## Supported in version 0.1.0
 

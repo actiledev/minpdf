@@ -2,7 +2,6 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Self
 import _minpdf
 
 Color = tuple[float, float, float]
@@ -15,7 +14,7 @@ BLACK: Color = (0.0, 0.0, 0.0)
 def rgb(r: int, g: int, b: int) -> Color:
     return (r / 255, g / 255, b / 255)
 
-@dataclass(slots=True)
+@dataclass
 class TextOptions:
     size: float = 12
     color: Color = BLACK
@@ -24,19 +23,19 @@ class TextOptions:
     max_width: float = 0
     font: str = ""
 
-@dataclass(slots=True)
+@dataclass
 class RectOptions:
     fill: Color | None = None
     stroke: Color | None = None
     line_width: float = 1
     radius: float = 0
 
-@dataclass(slots=True)
+@dataclass
 class ImageOptions:
     width: float = 0
     height: float = 0
 
-@dataclass(slots=True)
+@dataclass
 class TableColumn:
     header: str
     width: float = 0
@@ -46,27 +45,27 @@ class PDF:
     def __init__(self, size: tuple[float, float] = A4):
         self._doc = _minpdf.create(*size)
 
-    def __enter__(self) -> Self: return self
+    def __enter__(self) -> PDF: return self
     def __exit__(self, *_: object) -> None: self._doc = None
-    def page(self, size: tuple[float, float] = A4) -> Self:
+    def page(self, size: tuple[float, float] = A4) -> PDF:
         _minpdf.page(self._doc, *size); return self
-    def text(self, value: str, x: float, y: float, options: TextOptions | None = None) -> Self:
+    def text(self, value: str, x: float, y: float, options: TextOptions | None = None) -> PDF:
         o = options or TextOptions(); _minpdf.text(self._doc,value,x,y,o.size,*o.color,o.max_width,{"left":0,"center":1,"right":2}[o.align],{"normal":0,"bold":1,"italic":2,"bolditalic":3}[o.weight],o.font); return self
-    def rect(self, x: float, y: float, width: float, height: float, options: RectOptions | None = None) -> Self:
+    def rect(self, x: float, y: float, width: float, height: float, options: RectOptions | None = None) -> PDF:
         o=options or RectOptions();f=o.fill or BLACK;s=o.stroke or BLACK;_minpdf.rect(self._doc,x,y,width,height,*f,*s,o.line_width,o.radius,o.fill is not None,o.stroke is not None);return self
-    def line(self,x1:float,y1:float,x2:float,y2:float,color:Color=BLACK,width:float=1,dash:tuple[float,...]|list[float]=()) -> Self:
+    def line(self,x1:float,y1:float,x2:float,y2:float,color:Color=BLACK,width:float=1,dash:tuple[float,...]|list[float]=()) -> PDF:
         _minpdf.line(self._doc,x1,y1,x2,y2,*color,width,dash);return self
-    def circle(self,cx:float,cy:float,radius:float,options:RectOptions|None=None) -> Self:
+    def circle(self,cx:float,cy:float,radius:float,options:RectOptions|None=None) -> PDF:
         o=options or RectOptions();f=o.fill or BLACK;s=o.stroke or BLACK;_minpdf.circle(self._doc,cx,cy,radius,*f,*s,o.line_width,o.fill is not None,o.stroke is not None);return self
-    def image(self,data:bytes,x:float,y:float,options:ImageOptions|None=None) -> Self:
+    def image(self,data:bytes,x:float,y:float,options:ImageOptions|None=None) -> PDF:
         o=options or ImageOptions();_minpdf.image(self._doc,data,x,y,o.width,o.height);return self
-    def register_font(self,name:str,data:bytes) -> Self:
+    def register_font(self,name:str,data:bytes) -> PDF:
         _minpdf.register_font(self._doc,name,data);return self
-    def link(self,label:str,url:str,x:float,y:float,color:Color=(0,0,.933),underline:bool=True,size:float=12) -> Self:
+    def link(self,label:str,url:str,x:float,y:float,color:Color=(0,0,.933),underline:bool=True,size:float=12) -> PDF:
         _minpdf.link(self._doc,label,url,x,y,*color,size,underline);return self
-    def metadata(self,*,title:str="",author:str="",subject:str="",keywords:str="",creator:str="",creation_date:str="") -> Self:
+    def metadata(self,*,title:str="",author:str="",subject:str="",keywords:str="",creator:str="",creation_date:str="") -> PDF:
         _minpdf.metadata(self._doc,title,author,subject,keywords,creator,creation_date);return self
-    def table(self, rows:list[list[str]], x:float, y:float, columns:list[TableColumn], *, font_size:float=10, padding:float=8, header_background:Color=rgb(240,240,240), header_color:Color=BLACK, border_color:Color=rgb(204,204,204)) -> Self:
+    def table(self, rows:list[list[str]], x:float, y:float, columns:list[TableColumn], *, font_size:float=10, padding:float=8, header_background:Color=rgb(240,240,240), header_color:Color=BLACK, border_color:Color=rgb(204,204,204)) -> PDF:
         widths=[]
         for i,c in enumerate(columns):
             widths.append(c.width or (max([len(c.header),*(len(row[i]) if i<len(row) else 0 for row in rows)])*font_size*.52+2*padding))

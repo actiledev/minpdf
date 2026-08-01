@@ -1,7 +1,7 @@
 {
   "name": "minpdf",
   "version": "0.1.0",
-  "description": "Cross-language, zero-runtime-dependency PDF generation powered by one C11 file",
+  "description": "Ultra fast, zero-runtime-dependency PDF engine written in C",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/actiledev/minpdf.git",
@@ -26,8 +26,9 @@
     "LICENSE"
   ],
   "scripts": {
+    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\"",
     "build:wasm": "sh build-wasm.sh",
-    "build": "npm run build:wasm && tsc -p tsconfig.json",
+    "build": "npm run clean && npm run build:wasm && tsc -p tsconfig.json",
     "test": "node --test test/*.test.mjs",
     "test:all": "npm run build && npm test"
   },

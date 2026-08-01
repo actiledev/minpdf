@@ -1,4 +1,4 @@
-# Output, errors, and ownership
+# Output and errors
 
 ## In-memory output
 

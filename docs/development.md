@@ -74,7 +74,7 @@ The workflow builds the npm package, a Python source distribution, and CPython
 environments named `npm` and `pypi` control the publication jobs. Configure both
 environments with required reviewers before creating a release tag.
 
-PyPI can create `minpdf` through a pending trusted publisher. Configure its
+PyPI can create `minpdf-core` through a pending trusted publisher. Configure its
 GitHub owner as `actiledev`, its repository as `minpdf`, its workflow as
 `release.yml`, and its environment as `pypi`.
 

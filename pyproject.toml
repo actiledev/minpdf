@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "minpdf"
+name = "minpdf-core"
 version = "0.1.0"
 description = "Cross-language, zero-runtime-dependency PDF generation powered by one C11 file"
 readme = "README.md"
