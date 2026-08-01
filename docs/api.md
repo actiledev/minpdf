@@ -1,5 +1,9 @@
 # Shared API reference
 
+[Docs](README.md) · [Installation](installation.md) · [Languages](README.md#language-guides) · [Features](README.md#feature-guides)
+
+All bindings expose the same PDF operations. Names follow each language's usual style.
+
 ## Operation mapping
 
 | Operation     | C                      | Go             | Python          | JavaScript         |

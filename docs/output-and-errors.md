@@ -1,5 +1,7 @@
 # Output and errors
 
+[Docs](README.md) · [API](api.md) · [Core concepts](concepts.md) · [Security](../SECURITY.md)
+
 ## In-memory output
 
 All bindings produce the complete PDF in memory:

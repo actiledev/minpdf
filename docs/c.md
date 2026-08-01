@@ -1,19 +1,26 @@
 # C and C++ guide
 
-## Setup
+[Docs](README.md) · [Installation](installation.md) · [API](api.md) · [C example](../examples/c)
 
-Include the implementation in exactly one translation unit:
+## Install
+
+Copy [`include/minpdf.h`](../include/minpdf.h) into your project. Define `MINPDF_IMPLEMENTATION` in one C translation unit:
 
 ```c
 #define MINPDF_IMPLEMENTATION
 #include "minpdf.h"
 ```
 
-Other files include `minpdf.h` without the macro. The public declarations are
-C++ compatible through `extern "C"`; compile the implementation as C11 and link
-it with C++ applications.
+Other files include `minpdf.h` without the macro. For C++, compile the implementation as C11 and link it with the C++ application.
 
-## Complete PDF generation example
+The full example is in [`examples/c`](../examples/c). Run it from the repository root:
+
+```sh
+make
+./build/minpdf-showcase
+```
+
+## Basic example
 
 ```c
 #define MINPDF_IMPLEMENTATION

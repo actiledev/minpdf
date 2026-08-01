@@ -1,7 +1,8 @@
 # Tables
 
-Tables are a small convenience layout feature for headers and fixed-height text
-rows. They are not a spreadsheet or general layout engine.
+[Docs](README.md) · [API](api.md) · [Text and fonts](text-and-fonts.md) · [Images](images.md)
+
+Tables draw headers and fixed-height text rows. They do not provide spreadsheet or general layout features.
 
 ## Layout
 

@@ -1,5 +1,7 @@
 # Performance and development
 
+[Docs](README.md) · [Contributing](../CONTRIBUTING.md) · [Roadmap](roadmap.md) · [Security](../SECURITY.md)
+
 ## Performance model
 
 The engine stores compact page commands and resources, then serializes once.

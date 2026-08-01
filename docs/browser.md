@@ -1,6 +1,16 @@
 # Browser deployment
 
-The main JavaScript package loads the C engine in browsers, workers, Node.js, and Bun.
+[Docs](README.md) · [Installation](installation.md) · [JavaScript](javascript.md) · [Output](output-and-errors.md)
+
+## Install
+
+```sh
+npm install minpdf
+```
+
+The JavaScript package runs in browsers, workers, Node.js, and Bun. It loads the C engine as WebAssembly.
+
+The repository example is in [`examples/javascript`](../examples/javascript). It writes a file with Node.js, but uses the same drawing API as a browser. In a browser, use `download`, `blob`, or `objectURL` for output.
 
 ## Downloading a PDF
 
@@ -56,8 +66,7 @@ Check `response.ok` in production before consuming a response body.
 
 ## Hosting and bundlers
 
-The generated loader resolves its `.wasm` file relative to the JavaScript
-module. Deployments must copy that asset and serve it with the
+The loader resolves its `.wasm` file relative to the JavaScript module. Deployments must copy that asset and serve it with the
 `application/wasm` MIME type. Content Security Policy must permit loading the
 module and WASM asset from their deployed origins.
 

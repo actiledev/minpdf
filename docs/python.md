@@ -1,5 +1,23 @@
 # Python guide
 
+[Docs](README.md) · [Installation](installation.md) · [API](api.md) · [Python example](../examples/python)
+
+## Install
+
+The package is named `minpdf-core` and imports as `minpdf`. Its first PyPI release is pending. Install it from the repository for now:
+
+```sh
+python -m pip install minpdf-core
+```
+
+Python 3.9 or newer and a C compiler are required.
+
+The full example is in [`examples/python`](../examples/python). Run it from the repository root:
+
+```sh
+python3 examples/python/showcase.py
+```
+
 ## Basic PDF creation
 
 ```python

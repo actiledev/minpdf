@@ -1,5 +1,7 @@
 # Images
 
+[Docs](README.md) · [API](api.md) · [Text and fonts](text-and-fonts.md) · [Tables](tables.md)
+
 ## Supported formats
 
 ### JPEG

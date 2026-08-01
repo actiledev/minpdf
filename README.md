@@ -8,7 +8,7 @@ PDF generation from a single C11 file, with bindings for C/C++, Go, Python, Java
 
 [![CI](https://github.com/actiledev/minpdf/actions/workflows/ci.yml/badge.svg)](https://github.com/actiledev/minpdf/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/minpdf?logo=npm&logoColor=white)](https://www.npmjs.com/package/minpdf)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 [![C](https://img.shields.io/badge/C-00599C?logo=c&logoColor=white)](docs/c.md)
 [![C++](https://img.shields.io/badge/C++-%2300599C.svg?logo=c%2B%2B&logoColor=white)](docs/c.md)

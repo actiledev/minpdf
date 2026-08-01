@@ -1,5 +1,7 @@
 # Roadmap
 
+[Docs](README.md) · [API](api.md) · [Development](development.md) · [Contributing](../CONTRIBUTING.md)
+
 This roadmap lists minpdf's current features and planned work. It does not set
 delivery dates. Priorities may change as maintainers learn from users and
 contributors.

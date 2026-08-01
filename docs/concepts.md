@@ -1,5 +1,7 @@
 # Core concepts
 
+[Docs](README.md) · [Installation](installation.md) · [API](api.md) · [Output](output-and-errors.md)
+
 ## Coordinate system
 
 All languages use the same coordinate system:
@@ -49,5 +51,4 @@ Font and image data are copied when registered or added. Callers may release or
 reuse input buffers after the operation returns. The PDF generator retains all
 internal resources until closed or destroyed.
 
-The serializer builds the complete PDF in memory. This keeps the implementation
-small and fast, but peak memory includes internal page state plus final output.
+The serializer builds the complete PDF in memory. Peak memory includes the page state and final output.

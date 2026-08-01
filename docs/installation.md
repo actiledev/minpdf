@@ -1,8 +1,12 @@
 # Installation
 
+[Docs](README.md) · [C/C++](c.md) · [Go](go.md) · [Python](python.md) · [JavaScript](javascript.md) · [Browser](browser.md)
+
+Install the package for your language. All packages use the same C engine.
+
 ## C and C++
 
-The simplest distribution is the amalgamated header:
+Copy `include/minpdf.h` into your project and compile with C11:
 
 ```sh
 cc -std=c11 -O2 app.c -o app
@@ -18,6 +22,8 @@ cmake --build build
 cmake --install build --prefix /usr/local
 ```
 
+Example: [`examples/c`](../examples/c)
+
 ## Go
 
 ```sh
@@ -26,6 +32,8 @@ go get github.com/actiledev/minpdf
 
 The Go binding uses cgo. `CGO_ENABLED=1` and a working C compiler are required.
 No third-party Go module is used.
+
+Example: [`examples/go`](../examples/go)
 
 ## Python
 
@@ -58,6 +66,8 @@ distribution name is `minpdf-core`; Python code imports it as `minpdf`. Building
 from the source distribution requires a C compiler and setuptools. minpdf has
 no Python runtime dependencies.
 
+Example: [`examples/python`](../examples/python)
+
 ## JavaScript, TypeScript, and browsers
 
 ```sh
@@ -79,6 +89,8 @@ bun add minpdf
 The package contains the C engine compiled to WebAssembly and TypeScript
 declarations. Node.js 18+, Bun, modern ESM bundlers, workers, and evergreen
 browsers are supported. There are no runtime npm dependencies.
+
+Example: [`examples/javascript`](../examples/javascript)
 
 ## Building the repository
 

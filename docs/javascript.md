@@ -1,8 +1,28 @@
 # JavaScript and TypeScript guide
 
-## Initialization
+[Docs](README.md) · [Installation](installation.md) · [API](api.md) · [JavaScript example](../examples/javascript) · [Browser](browser.md)
 
-The C engine is loaded as WebAssembly, so PDF instance creation is asynchronous:
+## Install
+
+```sh
+npm install minpdf
+```
+
+Node.js 18+, Bun, modern browsers, workers, and ESM bundlers are supported.
+
+The full example is in [`examples/javascript`](../examples/javascript). Run it from a source checkout:
+
+```sh
+cd bindings/javascript
+npm install
+npm run build
+cd ../..
+node examples/javascript/showcase.mjs
+```
+
+## Create a PDF
+
+The C engine loads as WebAssembly, so PDF creation is asynchronous:
 
 ```ts
 import { PDF, SIZES, rgb } from "minpdf";

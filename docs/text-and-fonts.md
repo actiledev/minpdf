@@ -1,5 +1,7 @@
 # Text and fonts
 
+[Docs](README.md) · [API](api.md) · [Images](images.md) · [Tables](tables.md)
+
 ## Built-in fonts
 
 Without a custom font, minpdf uses PDF's standard Helvetica family:

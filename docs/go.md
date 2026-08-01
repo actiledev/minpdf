@@ -1,12 +1,20 @@
 # Go guide
 
-## Requirements
+[Docs](README.md) · [Installation](installation.md) · [API](api.md) · [Go example](../examples/go)
+
+## Install
 
 ```sh
 go get github.com/actiledev/minpdf
 ```
 
 The package requires cgo and a C compiler. Build with `CGO_ENABLED=1`.
+
+The full example is in [`examples/go`](../examples/go). Run it from the repository root:
+
+```sh
+go run ./examples/go
+```
 
 ## Creating and closing a PDF
 
@@ -33,8 +41,7 @@ func main() {
 }
 ```
 
-Call `Close`. A finalizer exists as a safety net. Methods called
-after `Close` return `minpdf: document is closed`.
+Always call `Close`. Methods called after `Close` return `minpdf: document is closed`.
 
 ## Drawing
 

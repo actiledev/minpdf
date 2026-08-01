@@ -2,9 +2,7 @@
 
 [README](../README.md) · [Installation](installation.md) · [API](api.md) · [Roadmap](roadmap.md) · [Contributing](../CONTRIBUTING.md) · [Security](../SECURITY.md)
 
-minpdf is a PDF generation library powered by one C11 file. The C/C++, Go,
-Python, JavaScript, and browser APIs share the same page model, coordinate
-system, drawing behavior, image decoder, font parser, and PDF serializer.
+minpdf generates PDFs from C/C++, Go, Python, JavaScript, TypeScript, and browsers. Every binding uses the same C11 engine.
 
 ## Start here
 
@@ -19,6 +17,15 @@ system, drawing behavior, image decoder, font parser, and PDF serializer.
 - [Python](python.md)
 - [JavaScript and TypeScript](javascript.md)
 - [Browser deployment](browser.md)
+
+## Examples
+
+- [C](../examples/c)
+- [Go](../examples/go)
+- [Python](../examples/python)
+- [JavaScript](../examples/javascript)
+
+Each example creates the same PDF and writes it to `examples/results`.
 
 ## Feature guides
 
