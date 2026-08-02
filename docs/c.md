@@ -13,6 +13,14 @@ Copy [`include/minpdf.h`](../include/minpdf.h) into your project. Define `MINPDF
 
 Other files include `minpdf.h` without the macro. For C++, compile the implementation as C11 and link it with the C++ application.
 
+### Allocator overrides
+
+The implementation uses `malloc`, `calloc`, `realloc`, and `free` by default.
+Define all four `MINPDF_MALLOC`, `MINPDF_CALLOC`, `MINPDF_REALLOC`, and
+`MINPDF_FREE` function targets before `MINPDF_IMPLEMENTATION` to use one
+compatible custom allocator. Memory returned through `minpdf_buffer` must still
+be released with `minpdf_buffer_free`.
+
 The full example is in [`examples/c`](../examples/c). Run it from the repository root:
 
 ```sh

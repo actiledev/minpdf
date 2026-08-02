@@ -29,11 +29,26 @@ python -m pytest bindings/python
 cd bindings/javascript
 npm install
 npm run build
+npm test
 ```
 
 `make test` checks C11 output and C++ linkage. The Go and Python tests exercise
 their native bindings. The JavaScript build type-checks the wrapper and compiles
 the C engine/bridge through Emscripten.
+
+Run short sanitizer fuzzing and native/Wasm conformance checks with:
+
+```sh
+make fuzz-smoke
+make conformance
+```
+
+The C fuzzers cover image and font parsers plus bounded serializer operation
+sequences. Go fuzz targets cross cgo; Python Hypothesis and JavaScript fast-check
+tests cover their extension and Wasm boundaries. Pull requests run bounded
+smoke cases. `.github/workflows/quality.yml` runs deeper cases daily at 03:00
+UTC and can be dispatched manually. Failed reproducers are retained as workflow
+artifacts.
 
 For a sanitizer build:
 
@@ -47,11 +62,27 @@ cc -std=c11 -O1 -g -fsanitize=address,undefined \
 
 ```sh
 make benchmark
+./build/benchmark --json
 go test -bench BenchmarkDocument -benchmem ./...
+python bindings/python/benchmark.py
+
+cd bindings/javascript
+node benchmark/benchmark.mjs
 ```
 
 Compare warmed medians on the same hardware. Track both elapsed time and peak
 memory for small, multipage, table-heavy, image-heavy, and Unicode PDFs.
+The C benchmark uses allocator overrides to report deterministic peak live
+engine memory. `tests/benchmark-baseline.json` records output and memory budgets;
+`tests/benchmark_budget.py` permits 10 percent peak-memory growth and reports,
+but does not fail on, timing deltas. Python and JavaScript VM memory is reported
+without gating because hosted-runner and garbage-collector noise is not
+deterministic. Nightly results are retained for 90 days.
+
+Update the baseline only for an intentional engine change. Run the complete
+test and conformance suites, capture a release build with
+`./build/benchmark --json`, review every delta, and commit the replacement
+baseline with the change.
 
 ## Release artifacts
 
@@ -65,6 +96,9 @@ A complete release consists of:
 
 The intended first-class matrix is Linux x64/arm64, macOS x64/arm64, Windows
 x64, and evergreen browsers.
+
+Public API stability and coordinated versioning rules are defined in
+[Compatibility and change management](compatibility.md).
 
 ## Publishing a release
 

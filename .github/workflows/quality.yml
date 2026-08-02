@@ -1,0 +1,100 @@
+name: Nightly quality
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-fuzz:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: make build/fuzz-parsers build/fuzz-serializer
+      - run: mkdir -p fuzz-artifacts
+      - name: Fuzz parsers
+        run: ASAN_OPTIONS=detect_leaks=1 ./build/fuzz-parsers -max_total_time=120 -artifact_prefix=fuzz-artifacts/
+      - name: Fuzz serializer
+        run: ASAN_OPTIONS=detect_leaks=1 ./build/fuzz-serializer -max_total_time=120 -artifact_prefix=fuzz-artifacts/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-fuzz-artifacts
+          path: fuzz-artifacts
+          retention-days: 30
+          if-no-files-found: ignore
+
+  go-fuzz:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with: { go-version: "1.22" }
+      - run: go test -run='^$' -fuzz='^FuzzImageBoundary$' -fuzztime=60s
+      - run: go test -run='^$' -fuzz='^FuzzFontBoundary$' -fuzztime=60s
+      - run: go test -run='^$' -fuzz='^FuzzTextBoundary$' -fuzztime=60s
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: go-fuzz-artifacts
+          path: testdata/fuzz
+          retention-days: 30
+          if-no-files-found: ignore
+
+  binding-properties:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.14" }
+      - run: python -m pip install ".[test]"
+      - env: { MINPDF_FUZZ_CASES: "5000" }
+        run: python -m pytest bindings/python/test_properties.py
+      - uses: mymindstorm/setup-emsdk@v14
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - working-directory: bindings/javascript
+        run: npm ci
+      - working-directory: bindings/javascript
+        run: npm run build
+      - working-directory: bindings/javascript
+        env: { MINPDF_FUZZ_CASES: "5000" }
+        run: npm test
+
+  benchmarks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with: { go-version: "1.22" }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.14" }
+      - uses: mymindstorm/setup-emsdk@v14
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - run: python -m pip install .
+      - working-directory: bindings/javascript
+        run: npm ci
+      - working-directory: bindings/javascript
+        run: npm run build
+      - run: make build/benchmark
+      - run: ./build/benchmark --json > build/benchmark-c.json
+      - run: python tests/benchmark_budget.py build/benchmark-c.json tests/benchmark-baseline.json | tee build/benchmark-summary.txt
+      - run: go test -run='^$' -bench BenchmarkDocument -benchmem ./... | tee build/benchmark-go.txt
+      - run: python bindings/python/benchmark.py > build/benchmark-python.json
+      - working-directory: bindings/javascript
+        run: node benchmark/benchmark.mjs > ../../build/benchmark-javascript.json
+      - name: Publish summary
+        run: |
+          echo '## minpdf nightly benchmarks' >> "$GITHUB_STEP_SUMMARY"
+          echo '```text' >> "$GITHUB_STEP_SUMMARY"
+          cat build/benchmark-summary.txt build/benchmark-go.txt >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-results
+          path: build/benchmark-*
+          retention-days: 90

@@ -146,6 +146,7 @@ func TestWriteToPropagatesWriterError(t *testing.T) {
 }
 
 func BenchmarkDocument(b *testing.B) {
+	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
 		doc, _ := New(A4)
 		for row := 0; row < 100; row++ {
@@ -154,4 +155,47 @@ func BenchmarkDocument(b *testing.B) {
 		_, _ = doc.Bytes()
 		doc.Close()
 	}
+}
+
+func FuzzImageBoundary(f *testing.F) {
+	png, _ := base64.StdEncoding.DecodeString("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAFgwJ/lqL8WQAAAABJRU5ErkJggg==")
+	f.Add(png)
+	f.Add([]byte("not an image"))
+	f.Fuzz(func(t *testing.T, data []byte) {
+		doc := newDocument(t)
+		err := doc.Image(data, 0, 0, nil)
+		if err == nil {
+			pdfBytes(t, doc)
+		}
+	})
+}
+
+func FuzzFontBoundary(f *testing.F) {
+	f.Add("font", []byte("not a font"))
+	f.Add("", []byte{})
+	f.Fuzz(func(t *testing.T, name string, data []byte) {
+		doc := newDocument(t)
+		if len(name) > 128 || len(data) > 1<<20 {
+			return
+		}
+		err := doc.RegisterFont(name, data)
+		if err == nil {
+			pdfBytes(t, doc)
+		}
+	})
+}
+
+func FuzzTextBoundary(f *testing.F) {
+	f.Add("plain text", float32(10), float32(20))
+	f.Add("café", float32(0), float32(0))
+	f.Fuzz(func(t *testing.T, value string, x, y float32) {
+		doc := newDocument(t)
+		if len(value) > 4096 {
+			return
+		}
+		err := doc.Text(value, x, y, nil)
+		if err == nil {
+			pdfBytes(t, doc)
+		}
+	})
 }

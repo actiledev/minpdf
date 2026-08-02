@@ -1,6 +1,6 @@
 # Shared API reference
 
-[Docs](README.md) · [Installation](installation.md) · [Languages](README.md#language-guides) · [Features](README.md#feature-guides)
+[Docs](README.md) · [Installation](installation.md) · [Compatibility](compatibility.md) · [Languages](README.md#language-guides) · [Features](README.md#feature-guides)
 
 All bindings expose the same PDF operations. Names follow each language's usual style.
 

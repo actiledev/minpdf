@@ -12,6 +12,9 @@ jobs:
       - name: C tests
         if: runner.os != 'Windows'
         run: make test
+      - name: Fuzz smoke tests
+        if: runner.os == 'Linux'
+        run: make fuzz-smoke
       - name: Go tests
         run: go test ./...
   python:
@@ -24,8 +27,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "${{ matrix.python }}" }
-      - run: python -m pip install . pytest
-      - run: python -m pytest bindings/python/test_minpdf.py
+      - run: python -m pip install ".[test]"
+      - run: python -m pytest bindings/python
   wasm:
     runs-on: ubuntu-latest
     steps:
@@ -37,3 +40,6 @@ jobs:
         run: npm install
       - working-directory: bindings/javascript
         run: npm run build
+      - working-directory: bindings/javascript
+        run: npm test
+      - run: make conformance

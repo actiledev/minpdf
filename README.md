@@ -2,7 +2,7 @@
 
 # minpdf
 
-PDF generation from a single C11 file, with bindings for C/C++, Go, Python, JavaScript, TypeScript, and browsers.
+Ultra fast, zero depedency, portable PDF engine written in C for JS/TS, client browser, Python, Golang and more.
 
 [Documentation](docs/README.md) · [Installation](docs/installation.md) · [API](docs/api.md) · [Roadmap](docs/roadmap.md) · [Contributing](CONTRIBUTING.md)
 
@@ -14,6 +14,7 @@ PDF generation from a single C11 file, with bindings for C/C++, Go, Python, Java
 [![C++](https://img.shields.io/badge/C++-%2300599C.svg?logo=c%2B%2B&logoColor=white)](docs/c.md)
 [![Go](https://img.shields.io/badge/Go-%2300ADD8.svg?&logo=go&logoColor=white)](docs/go.md)
 [![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=fff)](docs/python.md)
+[![Javascript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=000)](docs/javascript.md)
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=fff)](docs/javascript.md)
 [![WebAssembly](https://img.shields.io/badge/WebAssembly-654FF0?logo=webassembly&logoColor=fff)](docs/browser.md)
 
@@ -40,13 +41,15 @@ Node.js 18+, Bun, modern browsers, workers, and ESM bundlers are supported.
 python -m pip install minpdf-core
 ```
 
+Python 3.9+
+
 ### Go
 
 ```sh
 go get github.com/actiledev/minpdf
 ```
 
-The Go package uses cgo and requires `CGO_ENABLED=1` and a C compiler.
+Requires `CGO_ENABLED=1` and a C compiler.
 
 ### C and C++
 

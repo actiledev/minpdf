@@ -41,16 +41,19 @@ jobs:
           lock_version="$(node -p "require('./bindings/javascript/package-lock.json').version")"
           python_name="$(python -c "import tomllib; print(tomllib.load(open('pyproject.toml', 'rb'))['project']['name'])")"
           python_version="$(python -c "import tomllib; print(tomllib.load(open('pyproject.toml', 'rb'))['project']['version'])")"
+          c_version="$(python -c "import re; h=open('include/minpdf.h').read(); print('.'.join(re.search(rf'MINPDF_VERSION_{p} (\\d+)', h).group(1) for p in ('MAJOR','MINOR','PATCH')))")"
 
           echo "Tag version:          $tag_version"
           echo "npm package version:  $npm_version"
           echo "npm lockfile version: $lock_version"
           echo "Python package:       $python_name@$python_version"
+          echo "C API version:        $c_version"
 
           [[ -n "$tag_version" ]] || fail "Release tag must include a version after 'v'."
           [[ "$tag_version" == "$npm_version" ]] || fail "Tag version '$tag_version' does not match bindings/javascript/package.json version '$npm_version'."
           [[ "$tag_version" == "$lock_version" ]] || fail "Tag version '$tag_version' does not match bindings/javascript/package-lock.json version '$lock_version'."
           [[ "$tag_version" == "$python_version" ]] || fail "Tag version '$tag_version' does not match pyproject.toml version '$python_version'."
+          [[ "$tag_version" == "$c_version" ]] || fail "Tag version '$tag_version' does not match include/minpdf.h version '$c_version'."
           [[ "$python_name" == "minpdf-core" ]] || fail "Python project name must be 'minpdf-core' (found '$python_name')."
           echo "version=$tag_version" >> "$GITHUB_OUTPUT"
 

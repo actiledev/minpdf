@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "platform": "release-reference",
+  "benchmarks": [
+    {"name": "text", "median_seconds": 0.038732, "peak_live_bytes": 34040, "output_bytes": 64085000},
+    {"name": "wrapped", "median_seconds": 0.009789, "peak_live_bytes": 17656, "output_bytes": 13576500},
+    {"name": "multipage", "median_seconds": 0.025443, "peak_live_bytes": 55768, "output_bytes": 44051700},
+    {"name": "table", "median_seconds": 0.010596, "peak_live_bytes": 17656, "output_bytes": 15130500},
+    {"name": "png", "median_seconds": 0.006596, "peak_live_bytes": 2908, "output_bytes": 5614000}
+  ]
+}

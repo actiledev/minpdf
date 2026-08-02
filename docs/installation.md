@@ -37,11 +37,10 @@ Example: [`examples/go`](../examples/go)
 
 ## Python
 
-The first `minpdf-core` PyPI release is being prepared. Until it is published,
 install the package directly from the repository:
 
 ```sh
-python -m pip install "minpdf-core @ git+https://github.com/actiledev/minpdf.git"
+python -m pip install minpdf-core
 ```
 
 After the PyPI release, either of these commands will install the distribution:

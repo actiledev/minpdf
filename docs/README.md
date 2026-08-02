@@ -1,6 +1,6 @@
 # minpdf documentation
 
-[README](../README.md) · [Installation](installation.md) · [API](api.md) · [Roadmap](roadmap.md) · [Contributing](../CONTRIBUTING.md) · [Security](../SECURITY.md)
+[README](../README.md) · [Installation](installation.md) · [API](api.md) · [Compatibility](compatibility.md) · [Roadmap](roadmap.md) · [Contributing](../CONTRIBUTING.md) · [Security](../SECURITY.md)
 
 minpdf generates PDFs from C/C++, Go, Python, JavaScript, TypeScript, and browsers. Every binding uses the same C11 engine.
 
@@ -9,6 +9,7 @@ minpdf generates PDFs from C/C++, Go, Python, JavaScript, TypeScript, and browse
 - [Installation](installation.md): requirements and setup for every language
 - [Core concepts](concepts.md): pages, coordinates, colors, units, and resources
 - [Shared API](api.md): operation mapping and default behavior
+- [Compatibility](compatibility.md): API stability and change management
 
 ## Language guides
 

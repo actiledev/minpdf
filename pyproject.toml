@@ -12,6 +12,9 @@ license = "MIT"
 license-files = ["LICENSE"]
 dependencies = []
 
+[project.optional-dependencies]
+test = ["hypothesis>=6,<7", "pytest>=8,<10"]
+
 [project.urls]
 Homepage = "https://github.com/actiledev/minpdf"
 Documentation = "https://github.com/actiledev/minpdf/tree/main/docs"

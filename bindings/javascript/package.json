@@ -33,6 +33,7 @@
     "test:all": "npm run build && npm test"
   },
   "devDependencies": {
+    "fast-check": "^4.3.0",
     "typescript": "^6.0.0"
   },
   "engines": {

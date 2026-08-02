@@ -145,6 +145,25 @@ void minpdf_buffer_free(minpdf_buffer *buffer);
 #include <stdlib.h>
 #include <string.h>
 
+/* Override these before defining MINPDF_IMPLEMENTATION to instrument or
+   replace the engine allocator. All three functions must use one allocator. */
+#ifndef MINPDF_MALLOC
+#define MINPDF_MALLOC malloc
+#endif
+#ifndef MINPDF_REALLOC
+#define MINPDF_REALLOC realloc
+#endif
+#ifndef MINPDF_CALLOC
+#define MINPDF_CALLOC calloc
+#endif
+#ifndef MINPDF_FREE
+#define MINPDF_FREE free
+#endif
+#define malloc MINPDF_MALLOC
+#define realloc MINPDF_REALLOC
+#define calloc MINPDF_CALLOC
+#define free MINPDF_FREE
+
 /* The public wrapper is emitted after the single-line text primitive. */
 #define minpdf_text mp_text_line
 #define minpdf_rect mp_rect_basic
@@ -1901,5 +1920,9 @@ done:
   free(line.p);
   return status;
 }
+#undef malloc
+#undef realloc
+#undef calloc
+#undef free
 #endif
 #endif

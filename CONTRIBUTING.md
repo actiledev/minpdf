@@ -8,6 +8,7 @@ Thanks for contributing. Please follow the [Code of Conduct](CODE_OF_CONDUCT.md)
 - Open an issue before proposing a large feature, public API change, or new binding.
 - Keep pull requests focused and include tests and documentation for changed behavior.
 - Put shared PDF behavior in `include/minpdf.h`; bindings should remain consistent with the shared engine.
+- Follow the [compatibility policy](docs/compatibility.md) for public API and behavior changes.
 
 ## Setup and tests
 
@@ -24,6 +25,10 @@ cd bindings/javascript
 npm install
 npm run build
 npm test
+
+cd ../..
+make fuzz-smoke
+make conformance
 ```
 
 Shared-engine changes should run every relevant binding test. See [Performance and development](docs/development.md) for benchmarks, sanitizers, and release details.

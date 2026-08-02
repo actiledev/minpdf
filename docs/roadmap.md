@@ -20,12 +20,12 @@ minpdf 0.1.0 generates new PDFs with these features:
 
 ## 1. Release readiness
 
-- [ ] Test supported platforms and language toolchains in continuous integration
-- [ ] Produce repeatable releases for each maintained binding
-- [ ] Fuzz parsers, serializers, and cross-language boundaries
-- [ ] Track performance and memory use with reproducible benchmarks
-- [ ] Compare behavior across native and WebAssembly targets
-- [ ] Define PDF API compatibility guarantees and change management
+- [x] Test supported platforms and language toolchains in continuous integration
+- [x] Produce repeatable releases for each maintained binding
+- [x] Fuzz parsers, serializers, and cross-language boundaries
+- [x] Track performance and memory use with reproducible benchmarks
+- [x] Compare behavior across native and WebAssembly targets
+- [x] Define PDF API compatibility guarantees and change management
 
 ## 2. PDF layout features
 
