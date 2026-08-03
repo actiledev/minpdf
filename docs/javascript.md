@@ -17,7 +17,7 @@ cd bindings/javascript
 npm install
 npm run build
 cd ../..
-node examples/javascript/showcase.mjs
+node examples/javascript/showcase.js
 ```
 
 ## Create a PDF
